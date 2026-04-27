@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduCore LMS — Full-Stack Platform Overview</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #03050a;
+            --bg2: #070c14;
+            --surface: #0b1220;
+            --surface2: #0f1a2e;
+            --surface3: #131f35;
+            --border: rgba(56, 139, 253, 0.1);
+            --border2: rgba(56, 139, 253, 0.25);
+            --border3: rgba(56, 139, 253, 0.4);
+            --blue: #388bfd;
+            --blue-dim: #1f6feb;
+            --cyan: #39d353;
+            --orange: #f0883e;
+            --purple: #bc8cff;
+            --pink: #ff7b72;
+            --yellow: #e3b341;
+            --text: #c9d1d9;
+            --text2: #8b949e;
+            --text3: #484f58;
+            --heading: #f0f6fc;
+            --glow: rgba(56, 139, 253, 0.08);
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Instrument Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border2);
+            border-radius: 2px
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(56, 139, 253, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(56, 139, 253, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0
+        }
+
+        .orb1 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(56, 139, 253, 0.12), transparent 70%);
+            top: -300px;
+            left: -200px
+        }
+
+        .orb2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(188, 140, 255, 0.08), transparent 70%);
+            bottom: -100px;
+            right: -150px
+        }
+
+        .orb3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(57, 211, 83, 0.06), transparent 70%);
+            top: 50%;
+            left: 60%
+        }
+
+        .page {
+            position: relative;
+            z-index: 1
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 56px;
+            background: rgba(3, 5, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .nav-logo {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-weight: 900;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--heading)
+        }
+
+        .nav-logo-img {
+            width: 5vw;
+            height: 5vh;
+            object-fit: cover;
+
+        }
+
+        .nav-logo span {
+            color: var(--blue)
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px
+        }
+
+        .nav-links a {
+            font-size: 0.82rem;
+            color: var(--text2);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500
+        }
+
+        .nav-links a:hover {
+            color: var(--blue)
+        }
+
+        .nav-badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            background: rgba(57, 211, 83, 0.1);
+            border: 1px solid rgba(57, 211, 83, 0.3);
+            color: var(--cyan);
+            padding: 4px 12px;
+            border-radius: 999px
+        }
+
+        @media(max-width:640px) {
+            .nav-links {
+                display: none
+            }
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 40px 60px;
+            max-width: 1100px;
+            margin: 0 auto;
+            animation: fadeUp 1s ease both
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 32px
+        }
+
+        .hero-kicker::before,
+        .hero-kicker::after {
+            content: '';
+            width: 28px;
+            height: 1px;
+            background: var(--blue)
+        }
+
+        .hero h1 {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 900;
+            color: var(--heading);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin-bottom: 8px
+        }
+
+        .hero h1 .line2 {
+            display: block;
+            background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200%;
+            animation: gradShift 4s ease infinite
+        }
+
+        @keyframes gradShift {
+            0% {
+                background-position: 0%
+            }
+
+            50% {
+                background-position: 100%
+            }
+
+            100% {
+                background-position: 0%
+            }
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text2);
+            max-width: 680px;
+            line-height: 1.7;
+            margin: 28px 0 40px;
+            font-style: italic
+        }
+
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            max-width: 700px;
+            background: var(--surface)
+        }
+
+        .stat {
+            flex: 1;
+            min-width: 140px;
+            padding: 20px 24px;
+            border-right: 1px solid var(--border);
+            transition: background 0.2s
+        }
+
+        .stat:last-child {
+            border-right: none
+        }
+
+        .stat:hover {
+            background: var(--surface2)
+        }
+
+        .stat-val {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--heading);
+            letter-spacing: -0.03em;
+            margin-bottom: 2px
+        }
+
+        .stat-val span {
+            font-size: 1.1rem;
+            color: var(--blue)
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            color: var(--text3);
+            font-family: 'Fira Code', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.1em
+        }
+
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 40px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .sec-num {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            color: var(--text3);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 6px
+        }
+
+        .sec-title {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 900;
+            color: var(--heading);
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+            line-height: 1.1
+        }
+
+        .sec-desc {
+            font-size: 0.95rem;
+            color: var(--text2);
+            max-width: 600px;
+            line-height: 1.7;
+            margin-bottom: 40px
+        }
+
+        .stack-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .stack-row {
+            display: flex;
+            align-items: stretch;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s
+        }
+
+        .stack-row:hover {
+            border-color: var(--border3);
+            transform: translateX(4px)
+        }
+
+        .stack-row-label {
+            width: 160px;
+            flex-shrink: 0;
+            padding: 18px 20px;
+            background: var(--surface2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .stack-row-icon {
+            font-size: 1.1rem
+        }
+
+        .stack-row-name {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--heading)
+        }
+
+        .stack-row-tags {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 20px;
+            flex: 1
+        }
+
+        .stag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.73rem;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid;
+            transition: all 0.2s
+        }
+
+        .stag:hover {
+            transform: translateY(-1px)
+        }
+
+        .stag-blue {
+            background: rgba(56, 139, 253, 0.08);
+            border-color: rgba(56, 139, 253, 0.25);
+            color: var(--blue)
+        }
+
+        .stag-green {
+            background: rgba(57, 211, 83, 0.08);
+            border-color: rgba(57, 211, 83, 0.25);
+            color: var(--cyan)
+        }
+
+        .stag-purple {
+            background: rgba(188, 140, 255, 0.08);
+            border-color: rgba(188, 140, 255, 0.25);
+            color: var(--purple)
+        }
+
+        .stag-orange {
+            background: rgba(240, 136, 62, 0.08);
+            border-color: rgba(240, 136, 62, 0.25);
+            color: var(--orange)
+        }
+
+        .stag-pink {
+            background: rgba(255, 123, 114, 0.08);
+            border-color: rgba(255, 123, 114, 0.25);
+            color: var(--pink)
+        }
+
+        .stag-yellow {
+            background: rgba(227, 179, 65, 0.08);
+            border-color: rgba(227, 179, 65, 0.25);
+            color: var(--yellow)
+        }
+
+        .bento {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 12px
+        }
+
+        .bcard {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden
+        }
+
+        .bcard:hover {
+            border-color: var(--border3);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4)
+        }
+
+        .bc5 {
+            grid-column: span 5
+        }
+
+        .bc7 {
+            grid-column: span 7
+        }
+
+        .bc4 {
+            grid-column: span 4
+        }
+
+        .bc6 {
+            grid-column: span 6
+        }
+
+        .bc12 {
+            grid-column: span 12
+        }
+
+        @media(max-width:768px) {
+
+            .bc5,
+            .bc7,
+            .bc4,
+            .bc6,
+            .bc12 {
+                grid-column: span 12
+            }
+        }
+
+        .bcard-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            display: block
+        }
+
+        .bcard-title {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--heading);
+            margin-bottom: 8px;
+            letter-spacing: -0.01em
+        }
+
+        .bcard-desc {
+            font-size: 0.85rem;
+            color: var(--text2);
+            line-height: 1.65
+        }
+
+        .bcard-accent {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 12px
+        }
+
+        .search-demo {
+            margin-top: 16px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: var(--text2)
+        }
+
+        .search-bar span {
+            color: var(--blue)
+        }
+
+        .search-results {
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .sr {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: var(--text2);
+            padding: 4px 0
+        }
+
+        .sr-type {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: auto
+        }
+
+        .sr-text {
+            color: rgba(56, 139, 253, 0.8);
+            border: 1px solid rgba(56, 139, 253, 0.2);
+            background: rgba(56, 139, 253, 0.05)
+        }
+
+        .sr-video {
+            color: rgba(255, 123, 114, 0.8);
+            border: 1px solid rgba(255, 123, 114, 0.2);
+            background: rgba(255, 123, 114, 0.05)
+        }
+
+        .heatmap-wrap {
+            margin-top: 16px
+        }
+
+        .heatmap-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            color: var(--text3);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between
+        }
+
+        .heatmap {
+            display: flex;
+            gap: 3px
+        }
+
+        .hm-week {
+            display: flex;
+            flex-direction: column;
+            gap: 3px
+        }
+
+        .hm-cell {
+            width: 11px;
+            height: 11px;
+            border-radius: 2px;
+            transition: transform 0.15s;
+            cursor: pointer
+        }
+
+        .hm-cell:hover {
+            transform: scale(1.4)
+        }
+
+        .hm0 {
+            background: #161b22
+        }
+
+        .hm1 {
+            background: #0e4429
+        }
+
+        .hm2 {
+            background: #006d32
+        }
+
+        .hm3 {
+            background: #26a641
+        }
+
+        .hm4 {
+            background: #39d353
+        }
+
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.62rem;
+            color: var(--text3)
+        }
+
+        .hm-leg {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px
+        }
+
+        .lb-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 12px
+        }
+
+        .lb-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.8rem
+        }
+
+        .lb-rank {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--text3);
+            width: 20px
+        }
+
+        .lb-name {
+            flex: 1;
+            color: var(--text)
+        }
+
+        .lb-score {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--cyan)
+        }
+
+        .quiz-demo {
+            margin-top: 14px
+        }
+
+        .quiz-q {
+            font-size: 0.83rem;
+            color: var(--heading);
+            margin-bottom: 10px;
+            line-height: 1.5
+        }
+
+        .quiz-opts {
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .qopt {
+            font-size: 0.78rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            color: var(--text2);
+            background: var(--bg2);
+            transition: all 0.2s;
+            cursor: pointer
+        }
+
+        .qopt:hover {
+            border-color: var(--blue);
+            color: var(--blue)
+        }
+
+        .qopt.correct {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            background: rgba(57, 211, 83, 0.06)
+        }
+
+        .qopt.ai-tag::after {
+            content: 'AI Generated';
+            font-family: 'Fira Code', monospace;
+            font-size: 0.6rem;
+            color: var(--purple);
+            float: right;
+            opacity: 0.7
+        }
+
+        .arch-diagram {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .arch-diagram::before {
+            content: 'SYSTEM ARCHITECTURE';
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.6rem;
+            color: var(--text3);
+            letter-spacing: 0.2em
+        }
+
+        .arch-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        .arch-layer {
+            display: flex;
+            align-items: stretch;
+            gap: 12px
+        }
+
+        .arch-layer-label {
+            width: 100px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            color: var(--text3);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-align: right;
+            padding-right: 12px;
+            border-right: 2px solid var(--border)
+        }
+
+        .arch-boxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex: 1;
+            align-items: center
+        }
+
+        .abox {
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.73rem;
+            font-weight: 500;
+            border: 1px solid;
+            white-space: nowrap
+        }
+
+        .abox-blue {
+            background: rgba(56, 139, 253, 0.08);
+            border-color: rgba(56, 139, 253, 0.3);
+            color: var(--blue)
+        }
+
+        .abox-green {
+            background: rgba(57, 211, 83, 0.08);
+            border-color: rgba(57, 211, 83, 0.3);
+            color: var(--cyan)
+        }
+
+        .abox-purple {
+            background: rgba(188, 140, 255, 0.08);
+            border-color: rgba(188, 140, 255, 0.3);
+            color: var(--purple)
+        }
+
+        .abox-orange {
+            background: rgba(240, 136, 62, 0.08);
+            border-color: rgba(240, 136, 62, 0.3);
+            color: var(--orange)
+        }
+
+        .abox-pink {
+            background: rgba(255, 123, 114, 0.08);
+            border-color: rgba(255, 123, 114, 0.3);
+            color: var(--pink)
+        }
+
+        .abox-yellow {
+            background: rgba(227, 179, 65, 0.08);
+            border-color: rgba(227, 179, 65, 0.3);
+            color: var(--yellow)
+        }
+
+        .arch-arrow {
+            display: flex;
+            align-items: center;
+            padding-left: 112px;
+            color: var(--text3);
+            font-size: 0.8rem
+        }
+
+        .code-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px
+        }
+
+        @media(max-width:640px) {
+            .code-split {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .code-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden
+        }
+
+        .code-topbar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%
+        }
+
+        .dot-r {
+            background: #ff5f57
+        }
+
+        .dot-y {
+            background: #febc2e
+        }
+
+        .dot-g {
+            background: #28c840
+        }
+
+        .code-fname {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--text2);
+            margin-left: 6px
+        }
+
+        .code-body {
+            padding: 16px 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            line-height: 1.8;
+            overflow-x: auto
+        }
+
+        .cd {
+            color: var(--blue)
+        }
+
+        .cf {
+            color: var(--text2);
+            opacity: 0.6
+        }
+
+        .cc {
+            color: var(--text3)
+        }
+
+        .cm {
+            color: var(--cyan)
+        }
+
+        .co {
+            color: var(--orange)
+        }
+
+        .cp {
+            color: var(--purple)
+        }
+
+        .api-table {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            border-collapse: collapse
+        }
+
+        .api-table thead tr {
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .api-table th {
+            padding: 12px 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--text3);
+            text-align: left;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 400
+        }
+
+        .api-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s
+        }
+
+        .api-table tbody tr:last-child {
+            border-bottom: none
+        }
+
+        .api-table tbody tr:hover {
+            background: var(--surface2)
+        }
+
+        .api-table td {
+            padding: 13px 18px;
+            font-size: 0.84rem;
+            vertical-align: middle
+        }
+
+        .method-pill {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 5px;
+            white-space: nowrap
+        }
+
+        .m-get {
+            background: rgba(57, 211, 83, 0.1);
+            color: var(--cyan);
+            border: 1px solid rgba(57, 211, 83, 0.2)
+        }
+
+        .m-post {
+            background: rgba(56, 139, 253, 0.1);
+            color: var(--blue);
+            border: 1px solid rgba(56, 139, 253, 0.2)
+        }
+
+        .m-delete {
+            background: rgba(255, 123, 114, 0.1);
+            color: var(--pink);
+            border: 1px solid rgba(255, 123, 114, 0.2)
+        }
+
+        .ep-path {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--heading)
+        }
+
+        .ep-desc {
+            color: var(--text2);
+            font-size: 0.83rem
+        }
+
+        .ep-auth {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 4px
+        }
+
+        .auth-yes {
+            background: rgba(240, 136, 62, 0.08);
+            color: var(--orange);
+            border: 1px solid rgba(240, 136, 62, 0.2)
+        }
+
+        .auth-no {
+            background: rgba(57, 211, 83, 0.08);
+            color: var(--cyan);
+            border: 1px solid rgba(57, 211, 83, 0.2)
+        }
+
+        .scale-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px
+        }
+
+        @media(max-width:640px) {
+            .scale-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .scale-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s
+        }
+
+        .scale-card:hover {
+            border-color: var(--border3);
+            transform: translateY(-3px)
+        }
+
+        .scale-num {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px
+        }
+
+        .scale-unit {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px
+        }
+
+        .scale-desc {
+            font-size: 0.82rem;
+            color: var(--text2);
+            line-height: 1.5
+        }
+
+        footer {
+            max-width: 1100px;
+            margin: 80px auto 0;
+            padding: 32px 40px 48px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px
+        }
+
+        .foot-title {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--heading);
+            letter-spacing: -0.02em
+        }
+
+        .foot-title span {
+            color: var(--blue)
+        }
+
+        .foot-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px
+        }
+
+        .foot-tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            color: var(--text3);
+            padding: 2px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px
+        }
+
+        .foot-right {
+            text-align: right
+        }
+
+        .foot-made {
+            font-size: 0.8rem;
+            color: var(--text3);
+            font-family: 'Fira Code', monospace
+        }
+
+        .foot-tagline {
+            font-size: 0.82rem;
+            color: var(--text2);
+            margin-top: 4px;
+            font-style: italic
+        }
+
+        .div {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border2), transparent);
+            margin: 0 40px
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @media(max-width:640px) {
+
+            .hero,
+            .section {
+                padding-left: 20px;
+                padding-right: 20px
+            }
+
+            .stack-row-label {
+                width: 90px;
+                font-size: 0.65rem
+            }
+
+            nav {
+                padding: 0 20px
+            }
+
+            .arch-layer-label {
+                display: none
+            }
+
+            footer {
+                padding: 24px 20px 40px
+            }
+
+            .foot-right {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="page">
+
+        <nav>
+            <div class="nav-logo"><img class="nav-logo-img"
+                    src=
+                    "https://imgs.search.brave.com/8TslTuDZnUrwwL6DUgsgzNGARoiBJDCt40Y9KqvU4h8/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly90aHVt/YnMuZHJlYW1zdGlt/ZS5jb20vYi9sbXMt/bG9nby1sZXR0ZXIt/ZGVzaWduLWluaXRp/YWxzLWxpbmtlZC1j/aXJjbGUtdXBwZXJj/YXNlLW1vbm9ncmFt/LXR5cG9ncmFwaHkt/dGVjaG5vbG9neS1i/dXNpbmVzcy1yZWFs/LWVzdGF0ZS1icmFu/ZC0zOTM4NzAzMDEu/anBn" 
+                    alt="LMS">
+            </div>
+            <div class="nav-links">
+                <a href="#stack">Stack</a>
+                <a href="#features">Features</a>
+                <a href="#architecture">Architecture</a>
+                <a href="#api">API</a>
+                <a href="#scale">Scale</a>
+            </div>
+            <div class="nav-badge">&#9679; Full-Stack</div>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-kicker">Project Overview — Full-Stack Platform</div>
+            <h1>Learning<br><span class="line2">Management System</span></h1>
+            <p class="hero-sub">An enterprise-grade, AI-powered education platform built with a scalable layered
+                architecture, real-time capabilities, intelligent content search across text &amp; video, and
+                GitHub-style learning activity heatmap tracking.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-val">12<span>+</span></div>
+                    <div class="stat-label">Core Modules</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-val">12<span>+</span></div>
+                    <div class="stat-label">API Endpoints</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-val">2x</div>
+                    <div class="stat-label">Content Types</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-val">RT</div>
+                    <div class="stat-label">Real-Time Engine</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="div"></div>
+
+        <section class="section" id="stack">
+            <div class="sec-num">01 — Technology</div>
+            <div class="sec-title">Full-Stack Architecture</div>
+            <div class="sec-desc">Every layer chosen deliberately — for performance, type safety, developer experience,
+                and scalability.</div>
+            <div class="stack-rows">
+                <div class="stack-row">
+                    <div class="stack-row-label">
+                        <div class="stack-row-icon">&#x26DB;</div>
+                        <div class="stack-row-name">Frontend</div>
+                    </div>
+                    <div class="stack-row-tags">
+                        <span class="stag stag-blue">Next.js 14</span><span class="stag stag-blue">React 18</span><span
+                            class="stag stag-purple">TypeScript</span><span class="stag stag-blue">Redux
+                            Toolkit</span><span class="stag stag-green">Tailwind CSS</span>
+                    </div>
+                </div>
+                <div class="stack-row">
+                    <div class="stack-row-label">
+                        <div class="stack-row-icon">&#x1F5A5;</div>
+                        <div class="stack-row-name">Backend</div>
+                    </div>
+                    <div class="stack-row-tags">
+                        <span class="stag stag-green">Node.js</span><span class="stag stag-green">Express.js</span><span
+                            class="stag stag-purple">TypeScript</span><span class="stag stag-orange">MongoDB</span><span
+                            class="stag stag-orange">Mongoose ODM</span><span class="stag stag-pink">JWT Auth</span>
+                    </div>
+                </div>
+                <div class="stack-row">
+                    <div class="stack-row-label">
+                        <div class="stack-row-icon">&#x26A1;</div>
+                        <div class="stack-row-name">Real-Time</div>
+                    </div>
+                    <div class="stack-row-tags">
+                        <span class="stag stag-yellow">Socket.io</span><span class="stag stag-pink">Redis
+                            Cache</span><span class="stag stag-yellow">Pub/Sub Events</span>
+                    </div>
+                </div>
+                <div class="stack-row">
+                    <div class="stack-row-label">
+                        <div class="stack-row-icon">&#x1F916;</div>
+                        <div class="stack-row-name">AI / Search</div>
+                    </div>
+                    <div class="stack-row-tags">
+                        <span class="stag stag-purple">Google GenAI</span><span class="stag stag-blue">Full-Text
+                            Search</span><span class="stag stag-pink">Video Content Search</span><span
+                            class="stag stag-purple">AI Quiz Generator</span>
+                    </div>
+                </div>
+                <div class="stack-row">
+                    <div class="stack-row-label">
+                        <div class="stack-row-icon">&#x1F3D7;</div>
+                        <div class="stack-row-name">Architecture</div>
+                    </div>
+                    <div class="stack-row-tags">
+                        <span class="stag stag-orange">Repository Pattern</span><span class="stag stag-orange">Service
+                            Layer</span><span class="stag stag-green">MVC Controllers</span><span
+                            class="stag stag-blue">Modular Routing</span><span class="stag stag-pink">Rate
+                            Limiting</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="features">
+            <div class="sec-num">02 — Features</div>
+            <div class="sec-title">Platform Capabilities</div>
+            <div class="sec-desc">Not just CRUD — a complete, production-thinking learning ecosystem with AI, real-time,
+                and analytics.</div>
+            <div class="bento">
+
+                <div class="bcard bc7" style="grid-column:span 7">
+                    <div class="bcard-accent"
+                        style="background:rgba(56,139,253,0.1);color:var(--blue);border:1px solid rgba(56,139,253,0.2)">
+                        &#x1F50D; Intelligent Search</div>
+                    <div class="bcard-title" style="font-size:1.25rem">Dual-Mode Content Search</div>
+                    <div class="bcard-desc">Search any topic and get results across both text articles AND video content
+                        — with relevance ranking, topic clustering, and instant preview.</div>
+                    <div class="search-demo">
+                        <div class="search-bar"><span>&rsaquo;</span> Search: "Binary Search Trees"</div>
+                        <div class="search-results">
+                            <div class="sr"><span>&#x1F4C4;</span> Binary Search Trees — Complete Guide<span
+                                    class="sr-type sr-text">TEXT</span></div>
+                            <div class="sr"><span>&#x1F3A5;</span> BST Visual Explanation (12 min)<span
+                                    class="sr-type sr-video">VIDEO</span></div>
+                            <div class="sr"><span>&#x1F4C4;</span> BST Interview Problems + Solutions<span
+                                    class="sr-type sr-text">TEXT</span></div>
+                            <div class="sr"><span>&#x1F3A5;</span> Balancing AVL Trees (8 min)<span
+                                    class="sr-type sr-video">VIDEO</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bcard bc5" style="grid-column:span 5">
+                    <div class="bcard-accent"
+                        style="background:rgba(57,211,83,0.1);color:var(--cyan);border:1px solid rgba(57,211,83,0.2)">
+                        &#x1F4C8; Activity Tracker</div>
+                    <div class="bcard-title">GitHub-Style Learning Heatmap</div>
+                    <div class="bcard-desc">Every study session logged and visualized — time you spent learning, just
+                        like GitHub contributions.</div>
+                    <div class="heatmap-wrap">
+                        <div class="heatmap-label">
+                            <span>Jan</span><span>Apr</span><span>Jul</span><span>Oct</span><span>Dec</span>
+                        </div>
+                        <div class="heatmap" id="heatmap"></div>
+                        <div class="heatmap-legend">Less <div class="hm-leg hm0"></div>
+                            <div class="hm-leg hm1"></div>
+                            <div class="hm-leg hm2"></div>
+                            <div class="hm-leg hm3"></div>
+                            <div class="hm-leg hm4"></div> More
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bcard bc4" style="grid-column:span 4">
+                    <span class="bcard-icon">&#x1F9E0;</span>
+                    <div class="bcard-title">AI Quiz Generation</div>
+                    <div class="bcard-desc">Google GenAI creates contextual questions on any topic in real time.</div>
+                    <div class="quiz-demo">
+                        <div class="quiz-q">What is the time complexity of binary search?</div>
+                        <div class="quiz-opts">
+                            <div class="qopt">O(n)</div>
+                            <div class="qopt correct qopt ai-tag">O(log n) &#x2713;</div>
+                            <div class="qopt">O(n&#xB2;)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bcard bc4" style="grid-column:span 4">
+                    <span class="bcard-icon">&#x1F3C6;</span>
+                    <div class="bcard-title">Live Leaderboard</div>
+                    <div class="bcard-desc">Real-time rankings pushed via Socket.io — updates without any page refresh.
+                    </div>
+                    <div class="lb-rows">
+                        <div class="lb-row"><span class="lb-rank">#1</span><span class="lb-name">Priya S.</span><span
+                                class="lb-score">2840 pts</span></div>
+                        <div class="lb-row"><span class="lb-rank">#2</span><span class="lb-name">Rahul K.</span><span
+                                class="lb-score">2610 pts</span></div>
+                        <div class="lb-row" style="border-color:var(--border2)"><span class="lb-rank"
+                                style="color:var(--blue)">#7</span><span class="lb-name"
+                                style="color:var(--blue)">You</span><span class="lb-score">1920 pts</span></div>
+                    </div>
+                </div>
+
+                <div class="bcard bc4" style="grid-column:span 4">
+                    <span class="bcard-icon">&#x1F525;</span>
+                    <div class="bcard-title">Daily Challenges</div>
+                    <div class="bcard-desc">Fresh problems every 24h. Build streaks, earn badges, and stay consistent
+                        with daily learning goals.</div>
+                </div>
+
+                <div class="bcard bc6" style="grid-column:span 6">
+                    <span class="bcard-icon">&#x1F4CA;</span>
+                    <div class="bcard-title">Personal Analytics Dashboard</div>
+                    <div class="bcard-desc">Visual progress charts, streaks, topic coverage, quiz history, bookmarked
+                        content — everything in one place. Users see their full learning journey at a glance.</div>
+                </div>
+
+                <div class="bcard bc6" style="grid-column:span 6">
+                    <span class="bcard-icon">&#x1F516;</span>
+                    <div class="bcard-title">Smart Bookmarks</div>
+                    <div class="bcard-desc">Save any topic, article, or video with one click. Tagged, searchable, and
+                        works across both text and video content types seamlessly.</div>
+                </div>
+
+                <div class="bcard bc12"
+                    style="grid-column:span 12;display:flex;gap:32px;align-items:center;flex-wrap:wrap">
+                    <div>
+                        <span class="bcard-icon">&#x1F510;</span>
+                        <div class="bcard-title">Enterprise-Grade Security</div>
+                        <div class="bcard-desc">JWT-based stateless auth, bcrypt password hashing, HTTP-only cookies,
+                            rate limiting per IP, and structured error handling middleware across all routes.</div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-left:auto">
+                        <span class="stag stag-orange">JWT Tokens</span><span class="stag stag-orange">bcrypt
+                            Hashing</span><span class="stag stag-pink">Rate Limiting</span><span
+                            class="stag stag-blue">Middleware Chain</span><span class="stag stag-green">Error
+                            Boundaries</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="section" id="architecture">
+            <div class="sec-num">03 — Architecture</div>
+            <div class="sec-title">System Design</div>
+            <div class="sec-desc">Clean separation of concerns — every layer has one job. Built to scale horizontally.
+            </div>
+            <div class="arch-diagram">
+                <div class="arch-layers">
+                    <div class="arch-layer">
+                        <div class="arch-layer-label">Client</div>
+                        <div class="arch-boxes">
+                            <div class="abox abox-blue">Next.js App Router</div>
+                            <div class="abox abox-blue">Redux Store</div>
+                            <div class="abox abox-blue">React Components</div>
+                            <div class="abox abox-purple">TypeScript</div>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">&updownarrow; REST API + Socket.io WebSocket</div>
+                    <div class="arch-layer">
+                        <div class="arch-layer-label">API Layer</div>
+                        <div class="arch-boxes">
+                            <div class="abox abox-green">Express Router</div>
+                            <div class="abox abox-pink">Auth Middleware</div>
+                            <div class="abox abox-pink">Rate Limiter</div>
+                            <div class="abox abox-pink">Error Handler</div>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">&updownarrow;</div>
+                    <div class="arch-layer">
+                        <div class="arch-layer-label">Business</div>
+                        <div class="arch-boxes">
+                            <div class="abox abox-purple">Quiz Service</div>
+                            <div class="abox abox-purple">AI Service</div>
+                            <div class="abox abox-purple">User Service</div>
+                            <div class="abox abox-purple">Search Service</div>
+                            <div class="abox abox-purple">Email Service</div>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">&updownarrow;</div>
+                    <div class="arch-layer">
+                        <div class="arch-layer-label">Data</div>
+                        <div class="arch-boxes">
+                            <div class="abox abox-orange">MongoDB</div>
+                            <div class="abox abox-pink">Redis Cache</div>
+                            <div class="abox abox-yellow">Socket.io</div>
+                            <div class="abox abox-purple">Google GenAI</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="code-split">
+                <div class="code-panel">
+                    <div class="code-topbar">
+                        <div class="dot dot-r"></div>
+                        <div class="dot dot-y"></div>
+                        <div class="dot dot-g"></div><span class="code-fname">Backend/ — Node.js + Express</span>
+                    </div>
+                    <div class="code-body"><span class="cd">src/</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cm">app.ts</span> <span class="cc">&#xB7; server.ts</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">config/</span> <span class="cc"># env,
+                            constants</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">db/</span> <span class="cc"># MongoDB connect</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">models/</span> <span class="cc"># User, Quiz,
+                            Bookmark</span>
+                        &#x2502; &#x251C;&#x2500;&#x2500; <span class="cf">Syllabus.ts</span>
+                        &#x2502; &#x2514;&#x2500;&#x2500; <span class="cf">DailyChallenge.ts</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">repositories/</span> <span class="cc"># Data access
+                            layer</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">services/</span>
+                        &#x2502; &#x251C;&#x2500;&#x2500; <span class="co">ai.service.ts</span>
+                        &#x2502; &#x251C;&#x2500;&#x2500; <span class="co">redis.service.ts</span>
+                        &#x2502; &#x2514;&#x2500;&#x2500; <span class="co">email.service.ts</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">controllers/</span> <span class="cc"># Route
+                            logic</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">routers/</span> <span class="cc"># API routes</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">middlewares/</span> <span class="cc"># Auth,
+                            errors</span>
+                        &#x2514;&#x2500;&#x2500; <span class="cd">utils/</span> <span class="cc"># Logger, socket</span>
+                    </div>
+                </div>
+                <div class="code-panel">
+                    <div class="code-topbar">
+                        <div class="dot dot-r"></div>
+                        <div class="dot dot-y"></div>
+                        <div class="dot dot-g"></div><span class="code-fname">Frontend/ — Next.js + Redux</span>
+                    </div>
+                    <div class="code-body"><span class="cd">client/</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">app/</span> <span class="cc"># Next.js pages</span>
+                        &#x2502; &#x251C;&#x2500;&#x2500; <span class="cf">dashboard/</span>
+                        &#x2502; &#x251C;&#x2500;&#x2500; <span class="cf">quiz/</span>
+                        &#x2502; &#x251C;&#x2500;&#x2500; <span class="cf">search/</span> <span class="cc"># text +
+                            video</span>
+                        &#x2502; &#x251C;&#x2500;&#x2500; <span class="cf">bookmarks/</span>
+                        &#x2502; &#x251C;&#x2500;&#x2500; <span class="cf">leaderboard/</span>
+                        &#x2502; &#x2514;&#x2500;&#x2500; <span class="cf">profile/</span>
+                        &#x2514;&#x2500;&#x2500; <span class="cd">src/</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">components/</span> <span class="cc"># UI
+                            components</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">store/</span> <span class="cc"># Redux slices</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">hooks/</span> <span class="cc"># Custom hooks</span>
+                        &#x251C;&#x2500;&#x2500; <span class="cd">lib/</span> <span class="cc"># API clients</span>
+                        &#x2514;&#x2500;&#x2500; <span class="cd">types/</span> <span class="cc"># TS interfaces</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="api">
+            <div class="sec-num">04 — REST API</div>
+            <div class="sec-title">Backend Endpoints</div>
+            <div class="sec-desc">Fully typed, JWT-protected where required, with consistent error response schema
+                across all routes.</div>
+            <table class="api-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Endpoint</th>
+                        <th>Description</th>
+                        <th>Auth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="method-pill m-post">POST</span></td>
+                        <td class="ep-path">/api/user/register</td>
+                        <td class="ep-desc">Create new user account</td>
+                        <td><span class="ep-auth auth-no">Public</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-post">POST</span></td>
+                        <td class="ep-path">/api/user/login</td>
+                        <td class="ep-desc">Auth &amp; issue JWT token</td>
+                        <td><span class="ep-auth auth-no">Public</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-get">GET</span></td>
+                        <td class="ep-path">/api/user/profile</td>
+                        <td class="ep-desc">Fetch profile, stats, streaks</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-get">GET</span></td>
+                        <td class="ep-path">/api/user/activity</td>
+                        <td class="ep-desc">Heatmap activity data (time spent)</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-get">GET</span></td>
+                        <td class="ep-path">/api/syllabus/search</td>
+                        <td class="ep-desc">Search topics — text + video results</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-get">GET</span></td>
+                        <td class="ep-path">/api/syllabus/:id</td>
+                        <td class="ep-desc">Get full topic detail &amp; content</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-post">POST</span></td>
+                        <td class="ep-path">/api/quiz/generate</td>
+                        <td class="ep-desc">AI-generate quiz for any topic</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-post">POST</span></td>
+                        <td class="ep-path">/api/quiz/submit</td>
+                        <td class="ep-desc">Submit answers, get score + rank update</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-get">GET</span></td>
+                        <td class="ep-path">/api/bookmarks</td>
+                        <td class="ep-desc">List user's saved content</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-post">POST</span></td>
+                        <td class="ep-path">/api/bookmarks</td>
+                        <td class="ep-desc">Add bookmark (text or video)</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-delete">DELETE</span></td>
+                        <td class="ep-path">/api/bookmarks/:id</td>
+                        <td class="ep-desc">Remove bookmark</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="method-pill m-get">GET</span></td>
+                        <td class="ep-path">/api/daily-challenge</td>
+                        <td class="ep-desc">Today's challenge question</td>
+                        <td><span class="ep-auth auth-yes">JWT</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section" id="scale">
+            <div class="sec-num">05 — Why It's Production-Thinking</div>
+            <div class="sec-title">Built to Scale</div>
+            <div class="sec-desc">Architecture decisions that reflect real-world engineering — not tutorial-grade code.
+            </div>
+            <div class="scale-grid">
+                <div class="scale-card">
+                    <div class="scale-num">&#x221E;</div>
+                    <div class="scale-unit">Redis Cache</div>
+                    <div class="scale-desc">Frequently accessed data cached — reducing DB load and improving response
+                        times under concurrent users</div>
+                </div>
+                <div class="scale-card">
+                    <div class="scale-num">RT</div>
+                    <div class="scale-unit">Socket.io</div>
+                    <div class="scale-desc">Event-driven real-time architecture — leaderboard and live updates without
+                        polling</div>
+                </div>
+                <div class="scale-card">
+                    <div class="scale-num">3L</div>
+                    <div class="scale-unit">Layer Separation</div>
+                    <div class="scale-desc">Repository → Service → Controller separation — business logic is decoupled,
+                        testable, and replaceable</div>
+                </div>
+                <div class="scale-card">
+                    <div class="scale-num">TS</div>
+                    <div class="scale-unit">Full TypeScript</div>
+                    <div class="scale-desc">End-to-end type safety — shared types between frontend and backend reduce
+                        runtime bugs</div>
+                </div>
+                <div class="scale-card">
+                    <div class="scale-num">AI</div>
+                    <div class="scale-unit">Dynamic Content</div>
+                    <div class="scale-desc">Content is generated, not hardcoded — Google GenAI means quizzes are
+                        infinite and always relevant</div>
+                </div>
+                <div class="scale-card">
+                    <div class="scale-num">2x</div>
+                    <div class="scale-unit">Content Types</div>
+                    <div class="scale-desc">Unified search and bookmark system across both text articles and video
+                        content — rare at this level</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div>
+                <div class="foot-title">Edu<span>Core</span> LMS</div>
+                <div style="font-size:0.82rem;color:var(--text2);margin-top:4px;font-style:italic">Full-Stack &middot;
+                    AI-Powered &middot; Real-Time &middot; TypeScript</div>
+                <div class="foot-stack">
+                    <span class="foot-tag">Next.js</span><span class="foot-tag">Node.js</span><span
+                        class="foot-tag">MongoDB</span><span class="foot-tag">Redis</span><span
+                        class="foot-tag">Socket.io</span><span class="foot-tag">Google GenAI</span><span
+                        class="foot-tag">TypeScript</span>
+                </div>
+            </div>
+            <div class="foot-right">
+                <div class="foot-made">overview.html</div>
+                <div class="foot-tagline">"Built for learning. Designed to impress."</div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        (function () {
+            const heatmap = document.getElementById('heatmap');
+            if (!heatmap) return;
+            const seed = [0, 0, 1, 0, 2, 1, 0, 3, 2, 1, 0, 2, 3, 4, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 2, 3, 2, 0, 1, 2, 1, 3, 2, 4, 3, 2, 4, 1, 0, 2, 3, 4, 3, 2, 0, 1, 0, 2, 3, 4, 3, 4];
+            let i = 0;
+            for (let w = 0; w < 53; w++) {
+                const week = document.createElement('div');
+                week.className = 'hm-week';
+                for (let d = 0; d < 7; d++) {
+                    const cell = document.createElement('div');
+                    let lvl = seed[i % seed.length];
+                    const r = Math.random();
+                    if (r > 0.75) lvl = Math.min(4, lvl + 1);
+                    if (r < 0.15 && lvl > 0) lvl = lvl - 1;
+                    cell.className = 'hm-cell hm' + lvl;
+                    cell.title = 'Study session recorded';
+                    i++; week.appendChild(cell);
+                }
+                heatmap.appendChild(week);
+            }
+        })();
+        const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }) }, { threshold: 0.08 });
+        document.querySelectorAll('.section').forEach(s => obs.observe(s));
+    </script>
+</body>
+
+</html>
