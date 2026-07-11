@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduCore LMS — Full-Stack Platform Overview</title>
+    <meta name="description" content="Full-stack learning management platform overview — architecture, API design, and engineering decisions.">
+    <meta property="og:title" content="EduCore LMS — Full-Stack Platform Overview">
+    <meta property="og:description" content="AI-powered LMS built with Next.js, Node.js, MongoDB, Redis & Socket.io">
+    <meta property="og:type" content="website">
     <link
         href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Code:wght@400;500&display=swap"
         rel="stylesheet">
@@ -131,15 +135,23 @@
             font-size: 1.1rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
             color: var(--heading)
         }
 
-        .nav-logo-img {
-            width: 5vw;
-            height: 5vh;
-            object-fit: cover;
-
+        .nav-logo-mark {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-weight: 900;
+            font-size: 0.85rem;
+            color: #03050a;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            flex-shrink: 0;
         }
 
         .nav-logo span {
@@ -661,6 +673,14 @@
             border-radius: 2px
         }
 
+        .heatmap-caption {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.62rem;
+            color: var(--text3);
+            margin-top: 6px;
+            font-style: italic
+        }
+
         .lb-rows {
             display: flex;
             flex-direction: column;
@@ -695,6 +715,14 @@
             font-family: 'Fira Code', monospace;
             font-size: 0.72rem;
             color: var(--cyan)
+        }
+
+        .lb-caption {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.62rem;
+            color: var(--text3);
+            margin-top: 6px;
+            font-style: italic
         }
 
         .quiz-demo {
@@ -1210,10 +1238,9 @@
     <div class="page">
 
         <nav>
-            <div class="nav-logo"><img class="nav-logo-img"
-                    src=
-                    "https://imgs.search.brave.com/8TslTuDZnUrwwL6DUgsgzNGARoiBJDCt40Y9KqvU4h8/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly90aHVt/YnMuZHJlYW1zdGlt/ZS5jb20vYi9sbXMt/bG9nby1sZXR0ZXIt/ZGVzaWduLWluaXRp/YWxzLWxpbmtlZC1j/aXJjbGUtdXBwZXJj/YXNlLW1vbm9ncmFt/LXR5cG9ncmFwaHkt/dGVjaG5vbG9neS1i/dXNpbmVzcy1yZWFs/LWVzdGF0ZS1icmFu/ZC0zOTM4NzAzMDEu/anBn" 
-                    alt="LMS">
+            <div class="nav-logo">
+                <div class="nav-logo-mark">EC</div>
+                Edu<span>Core</span>
             </div>
             <div class="nav-links">
                 <a href="#stack">Stack</a>
@@ -1265,7 +1292,7 @@
                         <div class="stack-row-name">Frontend</div>
                     </div>
                     <div class="stack-row-tags">
-                        <span class="stag stag-blue">Next.js 16</span><span class="stag stag-blue">React 19</span><span
+                        <span class="stag stag-blue">Next.js</span><span class="stag stag-blue">React</span><span
                             class="stag stag-purple">TypeScript</span><span class="stag stag-blue">Redux
                             Toolkit</span><span class="stag stag-green">Tailwind CSS</span>
                     </div>
@@ -1364,6 +1391,7 @@
                             <div class="hm-leg hm3"></div>
                             <div class="hm-leg hm4"></div> More
                         </div>
+                        <div class="heatmap-caption">Sample data for illustration</div>
                     </div>
                 </div>
 
@@ -1375,7 +1403,7 @@
                         <div class="quiz-q">What is the time complexity of binary search?</div>
                         <div class="quiz-opts">
                             <div class="qopt">O(n)</div>
-                            <div class="qopt correct qopt ai-tag">O(log n) &#x2713;</div>
+                            <div class="qopt correct ai-tag">O(log n) &#x2713;</div>
                             <div class="qopt">O(n&#xB2;)</div>
                         </div>
                     </div>
@@ -1395,6 +1423,7 @@
                                 style="color:var(--blue)">#7</span><span class="lb-name"
                                 style="color:var(--blue)">You</span><span class="lb-score">1920 pts</span></div>
                     </div>
+                    <div class="lb-caption">Sample data for illustration</div>
                 </div>
 
                 <div class="bcard bc4" style="grid-column:span 4">
@@ -1693,7 +1722,7 @@
             </div>
             <div class="foot-right">
                 <div class="foot-made">overview.html</div>
-                <div class="foot-tagline">"Built for learning. Designed to impress."</div>
+                <div class="foot-tagline">Full-stack platform overview &mdash; architecture, features, and API design.</div>
             </div>
         </footer>
 
@@ -1710,10 +1739,7 @@
                 week.className = 'hm-week';
                 for (let d = 0; d < 7; d++) {
                     const cell = document.createElement('div');
-                    let lvl = seed[i % seed.length];
-                    const r = Math.random();
-                    if (r > 0.75) lvl = Math.min(4, lvl + 1);
-                    if (r < 0.15 && lvl > 0) lvl = lvl - 1;
+                    const lvl = seed[i % seed.length];
                     cell.className = 'hm-cell hm' + lvl;
                     cell.title = 'Study session recorded';
                     i++; week.appendChild(cell);

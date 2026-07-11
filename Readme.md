@@ -8,7 +8,7 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248)
 ![Redis](https://img.shields.io/badge/Redis-caching-DC382D)
 ![Socket.io](https://img.shields.io/badge/Socket.io-realtime-010101)
-![Next.js](https://img.shields.io/badge/Next.js-14-000000)
+![Next.js](https://img.shields.io/badge/Next.js-App%20Router-000000)
 
 **[Full architecture & UI walkthrough →](https://unnatikhare3105.github.io/LMS_OverviewFile/)**
 
@@ -41,7 +41,7 @@ Designed and built the system end-to-end — API design, database schema, servic
 
 | Layer | Choice | Reasoning |
 |---|---|---|
-| Frontend | Next.js 14 (App Router), Redux Toolkit, TypeScript | SSR for initial load performance, predictable global state for leaderboard/session data |
+| Frontend | Next.js (App Router), Redux Toolkit, TypeScript | SSR for initial load performance, predictable global state for leaderboard/session data |
 | Backend | Node.js, Express, TypeScript | Type safety shared across the stack; async I/O fits a read-heavy, real-time workload |
 | Database | MongoDB + Mongoose | Flexible schema for heterogeneous content (text/video) without repeated migrations |
 | Cache | Redis | Reduces DB load for frequently-read data (leaderboard, session lookups) under concurrent access |
